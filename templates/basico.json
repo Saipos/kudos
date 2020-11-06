@@ -1,0 +1,16 @@
+{
+  "image": "https://images.unsplash.com/photo-1604011153801-79c29f6b2895?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=400&ixid=eyJhcHBfaWQiOjF9&ixlib=rb-1.2.1&q=80&w=650",
+  "texts": [
+    {
+      "text": "chuáááá",
+      "x": 407,
+      "y": 379,
+      "color": "#ffffff",
+      "fontFamily": "Dancing Script",
+      "fontSize": 80,
+      "angle": -0.43833655985795783,
+      "width": 243.51979064941406,
+      "height": 80
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Básico",
+    "file": ["basico.json"]
+  },
+  {
+    "name": "Com texto",
+    "file": ["com-texto.json"]
+  }
+]
