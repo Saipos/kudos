@@ -70,35 +70,22 @@ function drawStatic() {
   }, 10);
 }
 
-function drawBorder(text) {
-  const x = text.x - 5;
-  const y = text.y - text.height - 5;
-  const w = text.width + x + 10;
-  const h = text.height + y + 10;
-  contextMove.strokeStyle = text.color ? text.color : config.color;
-  contextMove.setLineDash([7, 3, 3]);
-  contextMove.beginPath();
-  contextMove.moveTo(x, y);
-  contextMove.lineTo(w, y);
-  contextMove.lineTo(w, h);
-  contextMove.lineTo(x, h);
-  contextMove.lineTo(x, y);
-  contextMove.stroke();
-  drawMoveCursor(text);
-}
-
 function drawMoveCursor(text) {
-  const w = text.width + text.x + 30;
-  const h = text.y;
+  var p1 = polarToCartesian(text.x, text.y, text.angle, text.width + 20);
+  var w = p1.x;
+  var h = p1.y;
   contextMove.lineWidth = 3;
   contextMove.strokeStyle = text.color ? text.color : config.color;
   contextMove.setLineDash([]);
   contextMove.beginPath();
-  contextMove.arc(w, h, 10, Math.PI * 1, Math.PI * 1.5, true);
-  const dots = polarToCartesian(w, h, Math.PI * 1.5, 10);
-  contextMove.moveTo(dots.x + 5, dots.y + 10);
-  contextMove.lineTo(dots.x, dots.y);
-  contextMove.lineTo(dots.x + 10, dots.y - 3);
+  contextMove.arc(
+    w,
+    h,
+    10,
+    text.angle + Math.PI * 1,
+    text.angle + Math.PI * 1.5,
+    true
+  );
   contextMove.stroke();
   contextMove.lineWidth = 1;
 }
@@ -121,8 +108,8 @@ function draw() {
   contextMove.fillText(text.text, text.x, text.y);
   theColor.value = text.color;
   btnColor.style.background = theColor.value;
-  drawBorder(text);
   contextMove.restore();
+  drawBorder(text);
 }
 
 function polarToCartesian(x, y, rad, r) {
@@ -130,6 +117,36 @@ function polarToCartesian(x, y, rad, r) {
     x: Math.floor(x + r * Math.cos(rad)),
     y: Math.floor(y + r * Math.sin(rad)),
   };
+}
+function textPoints(text) {
+  const x = text.x - 5;
+  const y = text.y + 5;
+  const w = text.width;
+  const h = text.height;
+  var p0 = { x, y };
+  var p1 = polarToCartesian(p0.x, p0.y, text.angle, text.width + 10);
+  var p3 = polarToCartesian(p0.x, p0.y, 1.5708 + text.angle, -h);
+  var p2 = polarToCartesian(p3.x, p3.y, text.angle, text.width + 10);
+  return [p0, p1, p3, p2];
+}
+
+function drawBorder(text) {
+  text.points = textPoints(text);
+  var points = text.points;
+  var p0 = points[0];
+  var p1 = points[1];
+  var p3 = points[2];
+  var p2 = points[3];
+  contextMove.strokeStyle = text.color ? text.color : config.color;
+  contextMove.setLineDash([7, 3, 3]);
+  contextMove.beginPath();
+  contextMove.moveTo(p0.x, p0.y);
+  contextMove.lineTo(p1.x, p1.y);
+  contextMove.lineTo(p2.x, p2.y);
+  contextMove.lineTo(p3.x, p3.y);
+  contextMove.lineTo(p0.x, p0.y);
+  contextMove.stroke();
+  drawMoveCursor(text);
 }
 
 function textHittestCircle(x, y, textIndex) {
@@ -140,14 +157,18 @@ function textHittestCircle(x, y, textIndex) {
   return x >= w - 10 && x <= w + 10 && y >= h - 10 && y <= h + 10;
 }
 
-function textHittest(x, y, textIndex) {
-  const text = texts[textIndex];
-  return (
-    x >= text.x &&
-    x <= text.x + text.width &&
-    y >= text.y - text.height &&
-    y <= text.y
-  );
+function textHittest(a, b, textIndex) {
+  var text = texts[textIndex];
+  texts[textIndex].points = textPoints(text);
+  x = a;
+  y = b;
+  var p0 = { x: text.x, y: text.y };
+  var p1 = { x: text.x + text.width, y: text.y - text.height };
+  if (text.angle !== 0) {
+    p0 = texts[textIndex].points[0];
+    p1 = texts[textIndex].points[3];
+  }
+  return x >= p0.x && x <= p1.x && y >= p1.y && y <= p0.y;
 }
 
 function handleMouseDown(e) {
