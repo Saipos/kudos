@@ -1,10 +1,6 @@
 [
   {
-    "name": "Básico",
-    "file": ["basico.json"]
+    "name": "template 1",
+    "file": ["template (1).json"]
   },
-  {
-    "name": "Com texto",
-    "file": ["com-texto.json"]
-  }
 ]
