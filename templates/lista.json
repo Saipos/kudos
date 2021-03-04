@@ -1,6 +1,24 @@
 [
   {
+    [
+  {
     "name": "template 3",
     "file": ["template (3).json"]
+  },
+  {
+    "name": "template 4",
+    "file": ["template (4).json"]
+  },
+  {
+    "name": "template 5",
+    "file": ["template (5).json"]
+  },
+  {
+    "name": "template 6",
+    "file": ["template (6).json"]
+  },
+  {
+    "name": "template 7",
+    "file": ["template (7).json"]
   }
 ]
