@@ -20,5 +20,13 @@
   {
     "name": "template 7",
     "file": ["template (7).json"]
-  }
+  },
+    { 
+      "name": "template 8",
+    "file": ["template (8).json"]
+  },
+    {
+       "name": "template 9",
+    "file": ["template (9).json"]
+    }
 ]
